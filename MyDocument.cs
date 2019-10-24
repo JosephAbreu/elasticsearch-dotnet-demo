@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Elasticsearch1
+namespace ESDemo
 {
     public class MyDocument
     {

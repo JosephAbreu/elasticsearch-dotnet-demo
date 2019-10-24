@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace Elasticsearch1
+namespace ESDemo
 {
     public class JsonContent : StringContent
     {

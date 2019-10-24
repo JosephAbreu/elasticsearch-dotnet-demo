@@ -1,11 +1,10 @@
 ﻿using System;
-
 using Nest;
 using System.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace Elasticsearch1
+namespace ESDemo
 {
     class Program
     {
@@ -25,47 +24,50 @@ namespace Elasticsearch1
                 .DefaultIndex(indexName)
             );
 
-
             Console.WriteLine($"Creating index {indexName}...");
             new HttpClient().PutAsync(host + indexName, new JsonContent(new { }));
 
-            Console.WriteLine("Adding document...");
             IndexResponse contentResponse;
-            contentResponse = es.IndexDocument(new MyDocument()
-            {
-                Title = "This is a test document",
-                Notes = "Hello World!"
-            });
+
+            Console.WriteLine("Adding document...");
+            contentResponse = es.IndexDocument(
+                new MyDocument()
+                {
+                    Title = "This is a test document",
+                    Notes = "Hello World!"
+                });
             Console.WriteLine(contentResponse);
 
             Console.WriteLine("Adding document...");
-            contentResponse = es.IndexDocument(new MyDocument()
-            {
-                Title = "This is a test document",
-                Notes = "Hello Office!"
-            });
+            contentResponse = es.IndexDocument(
+                new MyDocument()
+                {
+                    Title = "This is a test document",
+                    Notes = "Hello Office!"
+                });
             Console.WriteLine(contentResponse);
 
             Console.Write("Provide search query: ");
             var contentQuery = Console.ReadLine();
             Console.WriteLine("Searching...");
             var results = es.Search<MyDocument>(
-                search => search.Query(
-                    query => query.Bool(
-                        match => match.Must(
-                            mustHave => mustHave.QueryString(
-                                queryString => queryString.Query(contentQuery)
+                    search => search.Query(
+                        query => query.Bool(
+                            match => match.Must(
+                                mustHave => mustHave.QueryString(
+                                    queryString => queryString.Query(contentQuery)
+                                )
                             )
                         )
                     )
                 )
-            )
-            .Documents
-            .ToList();
+                .Documents
+                .ToList();
+
             Console.WriteLine($"Found: {results.Count}");
             foreach(var doc in results)
             {
-                Console.WriteLine(new JsonContent(doc).ReadAsStringAsync().Result);
+                Console.WriteLine(doc);
             }
             
 
