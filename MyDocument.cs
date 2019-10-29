@@ -9,7 +9,6 @@ namespace ESDemo
 
         public override string ToString()
         {
-            // This will return the class in JSON format
             return JsonConvert.SerializeObject(this);
         }
     }
