@@ -12,10 +12,16 @@ namespace ESDemo
         {
             Console.WriteLine("Starting...");
 
+            #region Get Url
+
             Console.Write("Provide host URL (ex: http://localhost:9200): ");
             var host = Console.ReadLine();
             host = host + (host.EndsWith("/", StringComparison.InvariantCulture) ? "" : "/");
-            
+
+            #endregion
+
+            #region Create Index
+
             Console.Write("Provide index name: ");
             var indexName = Console.ReadLine();
 
@@ -26,6 +32,10 @@ namespace ESDemo
 
             Console.WriteLine($"Creating index {indexName}...");
             new HttpClient().PutAsync(host + indexName, new JsonContent(new { }));
+
+            #endregion
+
+            #region Add Documents
 
             IndexResponse contentResponse;
 
@@ -46,6 +56,10 @@ namespace ESDemo
                     Notes = "Hello Office!"
                 });
             Console.WriteLine(contentResponse);
+
+            #endregion
+
+            #region Search
 
             Console.Write("Provide search query: ");
             var contentQuery = Console.ReadLine();
@@ -69,10 +83,15 @@ namespace ESDemo
             {
                 Console.WriteLine(doc);
             }
-            
+
+            #endregion
+
+            #region Delete Index
 
             Console.WriteLine($"Deleting index {indexName}...");
             new HttpClient().DeleteAsync(host + indexName);
+
+            #endregion
 
             Console.WriteLine("Finished");
             Console.ReadKey();
